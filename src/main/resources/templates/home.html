@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -160,10 +160,10 @@
     <div class="header">
         <h1>Online FIR System</h1>
         <nav>
-            <a href="<c:url value='/login' />">Login</a>
-            <a href="<c:url value='/signup' />">Sign Up</a>
-            <a href="<c:url value='/track-complaint' />">Track Complaint</a>
-            <a href="<c:url value='/add-complaint' />">Add Complaint</a>
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/signup}">Sign Up</a>
+            <a th:href="@{/track-complaint}">Track Complaint</a>
+            <a th:href="@{/add-complaint}">Add Complaint</a>
         </nav>
     </div>
 
