@@ -2,12 +2,10 @@ package com.example.Online_FIR_System.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.Online_FIR_System.Model.User;
+import com.example.Online_FIR_System.Model.Officer;
 
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface OfficerRepository extends JpaRepository<Officer, Long> {
 
 	boolean existsByUsername(String username);
-
-	User findByUsername(String username);
 
 }

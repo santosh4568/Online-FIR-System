@@ -1,173 +1,237 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online FIR System - Sign Up</title>
+    <title>JusticeNet - Signup</title>
+    
+    <style>
+        /* Add your existing CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #b3ffff;
+            background-image: url("https://www.bhmpics.com/downloads/police-wallpaper-backgrounds-/30.law-enforcement-police-abstract-background.jpg");
+            background-size: cover;
+        }
+
+        .signup-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #ffbf80;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .signup-header h1 {
+            margin: 0;
+            font-size: 2em;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #000033;
+            color: #fff;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-group button:hover {
+            background-color: #00004d;
+        }
+
+        .error-message {
+            color: #d9534f;
+            margin-top: 10px;
+        }
+
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link-container p {
+            margin: 0;
+        }
+
+        .link-container a {
+            color: #000000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+
+        .tab {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab button {
+            background-color: #f1f1f1;
+            border: none;
+            outline: none;
+            padding: 14px 20px;
+            cursor: pointer;
+            font-size: 17px;
+            transition: 0.3s;
+        }
+
+        .tab button.active {
+            background-color: #ddd;
+        }
+
+        .signup-form {
+            display: none;
+        }
+
+        .signup-form.active {
+            display: block;
+        }
+    </style>
 </head>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #66d9ff;
-}
-
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background:  #ff3333;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.signup-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.signup-header h1 {
-    margin: 0;
-    font-size: 2em;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.form-group button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #000033;
-    color: #fff;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.form-group button:hover {
-    background-color: #00004d;
-}
-
-.error-message {
-    color: #d9534f;
-    margin-top: 10px;
-}
-.link-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.link-container p {
-    margin: 0;
-}
-
-.link-container a {
-    color: #000000;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.link-container a:hover {
-    text-decoration: underline;
-}
-.error-message{
-	color : #ccffff;
-}
-</style>
 <body>
-    <div class="container">
+    <div class="signup-container">
         <div class="signup-header">
-            <h1>Sign Up</h1>
+            <h1>Sign Up for JusticeNet</h1>
         </div>
-        <form id="signupForm" method="post" action="/signup">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <textarea id="address" name="address" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Sign Up</button>
-            </div>
-            <div id="error-message" class="error-message"></div>
-        </form>
+        <div class="tab">
+            <button class="tablinks active" onclick="openSignupForm(event, 'client')">Client Signup</button>
+            <button class="tablinks" onclick="openSignupForm(event, 'officer')">Officer Signup</button>
+        </div>
+        <div id="client" class="signup-form active">
+            <form action="/signup/client" method="post">
+                <div class="form-group">
+                    <label for="clientName">Name:</label>
+                    <input type="text" id="clientName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientPhone">Phone:</label>
+                    <input type="tel" id="clientPhone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientAddress">Address:</label>
+                    <textarea id="clientAddress" name="address" rows="4" cols="50"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="clientUsername">Username:</label>
+                    <input type="text" id="clientUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientPassword">Password:</label>
+                    <input type="password" id="clientPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Sign Up</button>
+                </div>
+                <div class="error-message"><!-- Error messages will appear here --></div>
+            </form>
+        </div>
+        <div id="officer" class="signup-form">
+            <form action="/signup/officer" method="post">
+                <div class="form-group">
+                    <label for="officerServiceNumber">Service Number:</label>
+                    <input type="text" id="officerServiceNumber" name="serviceNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="officerName">Name:</label>
+                    <input type="text" id="officerName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="officerEmail">Email:</label>
+                    <input type="email" id="officerEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="officerPhone">Phone:</label>
+                    <input type="tel" id="officerPhone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="officerState">State:</label>
+                    <input type="text" id="officerState" name="state" required>
+                </div>
+                <div class="form-group">
+                    <label for="officerDistrict">District:</label>
+                    <input type="text" id="officerDistrict" name="district" required>
+                </div>
+                <div class="form-group">
+                    <label for="officerCity">City:</label>
+                    <input type="text" id="officerCity" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="officerPoliceStation">Police Station Name:</label>
+                    <input type="text" id="officerPoliceStation" name="policeStationName" required>
+                </div>
+                <div class="form-group">
+                    <label for="officerUsername">Username:</label>
+                    <input type="text" id="officerUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="officerPassword">Password:</label>
+                    <input type="password" id="officerPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Sign Up</button>
+                </div>
+                <div class="error-message"><!-- Error messages will appear here --></div>
+            </form>
+        </div>
         <div class="link-container">
-            <p>Already have an account? <a href="/login">Login here</a>.</p>
+            <p>Already have an account? <a th:href="@{/login}">Login here</a>.</p>
         </div>
     </div>
     <script>
-        document.getElementById('signupForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            var password = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('confirmPassword').value;
-            var errorMessage = document.getElementById('error-message');
-
-            if (password !== confirmPassword) {
-                errorMessage.textContent = "Passwords do not match.";
-                return;
+        function openSignupForm(evt, formType) {
+            var i, form, tablinks;
+            form = document.getElementsByClassName("signup-form");
+            for (i = 0; i < form.length; i++) {
+                form[i].classList.remove("active");
             }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(formType).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
 
-            // Prepare data to send to the server
-            var formData = new FormData(this);
-
-            // Send form data using Fetch API
-            fetch('/signup', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Sign Up Successful!");
-                    window.location.href = "/login";
-                } else {
-                    errorMessage.textContent = data.message;
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                errorMessage.textContent = "An error occurred. Please try again.";
-            });
+        // Initial setup to show the client form by default
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('client').classList.add("active");
         });
     </script>
 </body>

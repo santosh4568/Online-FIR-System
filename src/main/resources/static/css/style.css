@@ -7,12 +7,14 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color:#66ffe0;
+    background-color:#b3ffff;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-image : url("https://www.shutterstock.com/image-vector/headlights-flares-siren-effect-front-260nw-1127450045.jpg");
+    background-size : cover;
 }
 
 .login-container {

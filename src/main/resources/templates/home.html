@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online FIR System</title>
+    <title>JusticeNet : Online FIR System</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f9;
+            background-image : url("https://media.istockphoto.com/id/1425875767/vector/angled-blue-red-abstract-dark-background.jpg?s=612x612&w=0&k=20&c=I5Bwz0-ijmvUv_dPRiGde_OmcGq7nnMo-UXGJ7K5mmE=");
+            background-size  : cover;
         }
 
         .header {
@@ -29,7 +31,7 @@
             margin-top: 10px;
         }
 
-        .header a {
+        .header a{
             color: #fff;
             text-decoration: none;
             padding: 10px 15px;
@@ -53,11 +55,11 @@
         }
 
         .intro h2 {
-            color: #333;
+            color: #ffff00;
         }
 
         .intro p {
-            color: #666;
+            color: #fff;
             font-size: 1.1em;
         }
 
@@ -69,7 +71,7 @@
         }
 
         .feature {
-            background-color: #fff;
+            background-color: #ffff;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin: 10px;
@@ -158,7 +160,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Online FIR System</h1>
+        <h1>JusticeNet</h1>
         <nav>
             <a th:href="@{/login}">Login</a>
             <a th:href="@{/signup}">Sign Up</a>
@@ -169,20 +171,20 @@
 
     <div class="container">
         <div class="intro">
-            <h2>Welcome to the Online FIR System</h2>
+            <h2>Welcome to JusticeNet</h2>
             <p>This system allows users to file FIRs easily and quickly online.</p>
         </div>
 
         <div class="features">
-            <div class="feature" onclick="openModal('Quick FIR Filing', 'File your FIRs quickly with our easy-to-use online system.')">
+            <div class="feature" onclick="openModal('Quick FIR Filing', '“JusticeNet” is an efficient and user-friendly platform designed to streamline the process of filing First Information Reports (FIRs) online. It offers a fast, secure, and accessible way for citizens to report crimes, ensuring timely and transparent communication with law enforcement agencies.')">
                 <h3>Quick FIR Filing</h3>
                 <p>File your FIRs quickly with our easy-to-use online system.</p>
             </div>
-            <div class="feature" onclick="openModal('Secure and Confidential', 'Your data is secure with us. We ensure confidentiality of all FIRs filed.')">
+            <div class="feature" onclick="openModal('Secure and Confidential', '“JusticeNet” emphasizes the importance of protecting users’ personal and sensitive information throughout the FIR filing process. This platform ensures that all data is handled with the highest level of security, maintaining confidentiality and privacy. Users can confidently report crimes, knowing their information is safeguarded against unauthorized access and breaches.')">
                 <h3>Secure and Confidential</h3>
                 <p>Your data is secure with us. We ensure confidentiality of all FIRs filed.</p>
             </div>
-            <div class="feature" onclick="openModal('Track FIR Status', 'Track the status of your FIR in real-time from anywhere.')">
+            <div class="feature" onclick="openModal('Track FIR Status', '“JusticeNet” provides users with real-time updates on the progress of their First Information Report (FIR). This feature ensures transparency and keeps users informed at every stage, from submission to resolution. By offering a clear and accessible way to monitor the status of their FIR, users can stay engaged and reassured throughout the process.')">
                 <h3>Track FIR Status</h3>
                 <p>Track the status of your FIR in real-time from anywhere.</p>
             </div>
@@ -190,7 +192,7 @@
     </div>
 
     <div class="footer">
-        <p>&copy; 2024 Online FIR System. All rights reserved.</p>
+        <p>&copy; 2024 JusticeNet. All rights reserved.</p>
     </div>
 
     <div id="featureModal" class="modal">
