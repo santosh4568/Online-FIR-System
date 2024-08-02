@@ -20,7 +20,7 @@ public class FIR {
     private String details;
     private String complainantName;
     private String complainantPhone;
-    
+    private String status = "Pending";
     
 	public Long getId() {
 		return id;
@@ -64,5 +64,13 @@ public class FIR {
 	public void setComplainantPhone(String complainantPhone) {
 		this.complainantPhone = complainantPhone;
 	}
+	
+	public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 }

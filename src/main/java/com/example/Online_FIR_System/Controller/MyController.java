@@ -1,4 +1,7 @@
 package com.example.Online_FIR_System.Controller;
+import java.util.List;
+//import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,12 +9,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.Online_FIR_System.Model.ComplaintStatus;
 import com.example.Online_FIR_System.Model.FIR;
 import com.example.Online_FIR_System.Model.Officer;
 import com.example.Online_FIR_System.Model.User;
+import com.example.Online_FIR_System.Services.ComplaintStatusService;
 import com.example.Online_FIR_System.Services.FirService;
 import com.example.Online_FIR_System.Services.OfficerService;
 import com.example.Online_FIR_System.Services.UserService;
+
+//import jakarta.servlet.http.HttpServletRequest;
+//import jakarta.servlet.http.HttpServletResponse;
+//import jakarta.servlet.http.HttpSession;
 
 
 
@@ -27,9 +36,12 @@ public class MyController {
 	@Autowired
 	private OfficerService officerService; 
 	
+	@Autowired
+    private ComplaintStatusService complaintStatusService;
+	
 	boolean isLogin  = false;
 	
-	
+	String activePoliceStation = "";
 	
 	@GetMapping("/")
 	public ModelAndView loadHome() {
@@ -53,6 +65,43 @@ public class MyController {
 	}
 	
 	
+	@GetMapping("/admin/fir")
+	public ModelAndView AllFir() {
+		ModelAndView modelAndView = new ModelAndView();
+		List<FIR> complaints = firService.getAllFIR();
+		modelAndView.addObject("complaints", complaints);
+        modelAndView.setViewName("allFIR");
+		
+		return modelAndView;
+	}
+	
+	
+	@GetMapping("/admin/user")
+	public ModelAndView AllUser() {
+		ModelAndView modelAndView = new ModelAndView();
+		List<User> users = userService.getAllUser();
+		modelAndView.addObject("users", users);
+		modelAndView.setViewName("alluser");
+		return modelAndView;	
+	}
+	
+	
+	@GetMapping("/admin/officer")
+	public ModelAndView AllOfficer() {
+		ModelAndView modelAndView = new ModelAndView();
+		List<Officer> officers = officerService.getAllOfficer();
+		modelAndView.addObject("officers", officers);
+		modelAndView.setViewName("allofficer");
+		return modelAndView;	
+		
+	}
+	
+	
+	
+//	@GetMapping("/login/officer")
+//	public ModelAndView showOfficerHome() {
+//		return new ModelAndView("login");
+//	}
 //	@GetMapping("/signupOfficer")
 //	public ModelAndView showOfficerSignup() {
 //		return new ModelAndView("signupOfficer");
@@ -138,12 +187,43 @@ public class MyController {
         	modelAndView.setViewName("WrongPassword");
         }
         else {
-        	isLogin = true;
-            modelAndView.setViewName("home"); // Redirect to the home page on successful login
+        	//session.setAttribute("username", username);
+        	modelAndView.setViewName("home"); // Redirect to the home page on successful login
         }
 
         return modelAndView;
     }
+	
+	
+	@PostMapping("/login/officer")
+	public ModelAndView loginOfficer(@RequestParam("policeServiceNumber") String serviceNumberString , 
+			@RequestParam("password") String password , ModelAndView modelAndView) {
+		
+		Officer officer = officerService.findByUsername(serviceNumberString);
+		
+		if (officer == null || !(officerService.existsByUsername(serviceNumberString))){
+        	modelAndView.addObject("errorMessage", "Invalid username");
+            modelAndView.setViewName("WrongUsername");
+        } 
+        else if (!officer.getPassword().equals(password)) {
+        	modelAndView.addObject("errorPassword", "Wrong Password");
+        	modelAndView.setViewName("WrongPassword");
+        }
+        else {
+        	//session.setAttribute("username", serviceNumberString);
+        	activePoliceStation = officer.getPoliceStation();
+        	//List<FIR> complaints = firService.getAllFIR();
+        	List<FIR> complaints = firService.findByPoliceStation(activePoliceStation);           
+        	modelAndView.addObject("complaints", complaints);
+            modelAndView.setViewName("officerHome"); // Redirect to the home page on successful login
+        }
+		
+		return modelAndView;	
+		
+	}
+	
+	
+	
 	
 	@PostMapping("/add-complaint")
 	public ModelAndView addComplaint(
@@ -155,11 +235,7 @@ public class MyController {
             @RequestParam("complainantPhone") String complainantPhone) {
 		
 		ModelAndView modelAndView = new ModelAndView();
-		if(isLogin == false){
-			modelAndView.setViewName("login");
-			return modelAndView;		
-		}
-		else {
+
 		FIR complaint = new FIR();
 		complaint.setState(state);
         complaint.setDistrict(district);
@@ -168,13 +244,101 @@ public class MyController {
         complaint.setComplainantName(complainantName);
         complaint.setComplainantPhone(complainantPhone);
 
-        firService.SaveFir(complaint);
+//        firService.SaveFir(complaint);
+//
+//        modelAndView.setViewName("add-complaint");
+//        modelAndView.addObject("successMessage", "Complaint submitted successfully!");
+//        modelAndView.setViewName("home");
+        FIR savedComplaint = firService.SaveFir(complaint);
 
-        modelAndView.setViewName("add-complaint");
+        ComplaintStatus complaintStatus = new ComplaintStatus();
+        complaintStatus.setComplaintId(savedComplaint.getId());
+        complaintStatus.setStatus(savedComplaint.getStatus());
+
+        complaintStatusService.saveComplaintStatus(complaintStatus);
+
         modelAndView.addObject("successMessage", "Complaint submitted successfully!");
         modelAndView.setViewName("home");
 		
 		return modelAndView;
-		}
 	}
+	
+	
+	
+	@GetMapping("/officerHome")
+    public ModelAndView officerHome() {
+        ModelAndView modelAndView = new ModelAndView();
+        //List<FIR> complaints = firService.getAllFIR();
+        List<FIR> complaints = firService.findByPoliceStation(activePoliceStation);
+        modelAndView.addObject("complaints", complaints);
+        modelAndView.setViewName("officerHome");
+        return modelAndView;
+    }
+
+	@PostMapping("/acceptComplaint")
+    public String acceptComplaint(@RequestParam("complaintId") Long complaintId) {
+        FIR complaint = firService.findById(complaintId).orElse(null);
+        if (complaint != null) {
+            complaint.setStatus("Accepted");
+            firService.SaveFir(complaint);
+            firService.updateFirStatus(complaintId, "Accepted");
+        }
+        return "redirect:/officerHome";
+    }
+
+	@PostMapping("/rejectComplaint")
+    public String rejectComplaint(@RequestParam("complaintId") Long complaintId) {
+        FIR complaint = firService.findById(complaintId).orElse(null);
+        if (complaint != null) {
+            //firService.deleteById(complaintId);
+            firService.rejectComplaint(complaintId);
+            firService.updateFirStatus(complaintId, "Rejected");
+        }
+        return "redirect:/officerHome";
+    }
+	
+	@PostMapping("/culpritArrested")
+    public String culpritArrested(@RequestParam("complaintId") Long complaintId) {
+        FIR complaint = firService.findById(complaintId).orElse(null);
+        if (complaint != null) {
+            //firService.deleteById(complaintId);
+            //firService.rejectComplaint(complaintId);
+        	firService.arrestedCulprit(complaintId);
+        	
+        	
+            firService.updateFirStatus(complaintId, "Culprit Arrested");
+        }
+        return "redirect:/officerHome";
+    }
+	
+	
+	@GetMapping("/track-complaint")
+    public ModelAndView showTrackComplaintForm() {
+        return new ModelAndView("track-complaint-form");
+    }
+
+    @PostMapping("/trackComplaint")
+    public ModelAndView trackComplaint(@RequestParam("complaintId") Long complaintId) {
+    	 ModelAndView modelAndView = new ModelAndView("track-complaint");
+         
+         ComplaintStatus complaintStatus = complaintStatusService.findByComplaintId(complaintId);
+
+         if (complaintStatus == null) {
+             modelAndView.addObject("errorMessage", "No complaint found with the provided ID.");
+         } else {
+             modelAndView.addObject("statusMessage", "The status of your complaint is: " + complaintStatus.getStatus());
+         }
+
+         return modelAndView;
+    }
+    
+//    @GetMapping("/logout")
+//    public String logout(HttpServletRequest request, HttpServletResponse response) {
+//        // Invalidate the session
+//        HttpSession session = request.getSession(false);
+//        if (session != null) {
+//            session.invalidate();
+//        }
+//        return "redirect:/";
+//    }
 }

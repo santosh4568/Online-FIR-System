@@ -1,5 +1,7 @@
 package com.example.Online_FIR_System.Services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +27,10 @@ public class UserService {
 	public User findByUsername(String username) {
 		// TODO Auto-generated method stub
 		return userRepo.findByUsername(username);
+	}
+
+	public List<User> getAllUser() {
+		// TODO Auto-generated method stub
+		return userRepo.findAll();
 	}
 }

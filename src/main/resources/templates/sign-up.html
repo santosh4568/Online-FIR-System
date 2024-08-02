@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JusticeNet - Signup</title>
-    
+    <link
+            rel="icon"
+            href="https://cdn-icons-png.freepik.com/512/10275/10275817.png"
+            type="image/x-icon"
+        />
     <style>
         /* Add your existing CSS styles here */
         body {
@@ -48,6 +52,7 @@
         }
 
         .form-group input,
+        .form-group select,
         .form-group textarea {
             width: 100%;
             padding: 10px;
@@ -123,16 +128,19 @@
         .signup-form.active {
             display: block;
         }
+        a{
+        	text-decoration : none;
+        }
     </style>
 </head>
 <body>
     <div class="signup-container">
         <div class="signup-header">
-            <h1>Sign Up for JusticeNet</h1>
+            <h1>Sign Up for <a th:href="@{/}">JusticeNet</a></h1>
         </div>
         <div class="tab">
-            <button class="tablinks active" onclick="openSignupForm(event, 'client')">Client Signup</button>
-            <button class="tablinks" onclick="openSignupForm(event, 'officer')">Officer Signup</button>
+            <button class="tablinks active" onclick="openSignupForm(event, 'client')">User's Signup</button>
+            <button class="tablinks" onclick="openSignupForm(event, 'officer')">Officer's Signup</button>
         </div>
         <div id="client" class="signup-form active">
             <form action="/signup/client" method="post">
@@ -182,19 +190,29 @@
                 </div>
                 <div class="form-group">
                     <label for="officerState">State:</label>
-                    <input type="text" id="officerState" name="state" required>
+                    <select id="officerState" name="state" required>
+                        <option value="">Select State</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="officerDistrict">District:</label>
-                    <input type="text" id="officerDistrict" name="district" required>
+                    <select id="officerDistrict" name="district" required>
+                        <option value="">Select District</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="officerCity">City:</label>
-                    <input type="text" id="officerCity" name="city" required>
+                    <select id="officerCity" name="city" required>
+                        <option value="">Select City</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="officerPoliceStation">Police Station Name:</label>
-                    <input type="text" id="officerPoliceStation" name="policeStationName" required>
+                    <select id="officerPoliceStation" name="policeStationName" required>
+                        <option value="">Select Police Station</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="officerUsername">Username:</label>
@@ -232,6 +250,57 @@
         // Initial setup to show the client form by default
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('client').classList.add("active");
+
+            const stateSelect = document.getElementById('officerState');
+            const districtSelect = document.getElementById('officerDistrict');
+            const citySelect = document.getElementById('officerCity');
+            const policeStationSelect = document.getElementById('officerPoliceStation');
+
+            const data = {
+                "Bihar": {
+                    "Patna": ['Patliputra', 'Kankarbagh', 'Gandhi Maidan'],
+                    "Gaya": ['Civil Lines', 'Rampur', 'Magadh Medical College'],
+                    "Bhagalpur" : ['Kotwali', 'Tilka Manjhi', 'Jogsar']
+                },
+                "Andhra Pradesh": {
+                    "Vishakhapatnam": ['MVP Colony', 'Dwaraka Nagar', 'Gajuwaka'],
+                    "Vijayawada": ['Governorpet', 'Patamata', 'Suryaraopeta'],
+                    "Guntur" : ['Arundelpet', 'Kothapeta', 'Nallapadu']
+                }
+            };
+
+            stateSelect.addEventListener('change', function() {
+                const selectedState = stateSelect.value;
+                districtSelect.innerHTML = '<option value="">Select District</option>';
+                citySelect.innerHTML = '<option value="">Select City</option>';
+                policeStationSelect.innerHTML = '<option value="">Select Police Station</option>';
+                if (selectedState) {
+                    for (const district in data[selectedState]) {
+                        districtSelect.innerHTML += `<option value="${district}">${district}</option>`;
+                    }
+                }
+            });
+
+            districtSelect.addEventListener('change', function() {
+                const selectedState = stateSelect.value;
+                const selectedDistrict = districtSelect.value;
+                citySelect.innerHTML = '<option value="">Select City</option>';
+                policeStationSelect.innerHTML = '<option value="">Select Police Station</option>';
+                if (selectedDistrict) {
+                    const cities = data[selectedState][selectedDistrict];
+                    cities.forEach(city => {
+                        citySelect.innerHTML += `<option value="${city}">${city}</option>`;
+                    });
+                }
+            });
+
+            citySelect.addEventListener('change', function() {
+                const selectedCity = citySelect.value;
+                policeStationSelect.innerHTML = '<option value="">Select Police Station</option>';
+                if (selectedCity) {
+                    policeStationSelect.innerHTML += `<option value="${selectedCity}">${selectedCity} PS</option>`;
+                }
+            });
         });
     </script>
 </body>

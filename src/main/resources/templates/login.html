@@ -4,17 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JusticeNet - Login</title>
+    <link
+            rel="icon"
+            href="https://cdn-icons-png.freepik.com/512/10275/10275817.png"
+            type="image/x-icon"
+        />
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <script th:src="@{/js/script.js}"></script>
 </head>
+<style>
+	a{
+		text-decoration : none;
+	}
+</style>
 <body>
     <div class="login-container">
         <div class="login-header">
-            <h1>Login to JusticeNet</h1>
+            <h1>Login to <a th:href="@{/}">JusticeNet</a></h1>
         </div>
         <div class="tab">
-            <button class="tablinks active" onclick="openLoginForm(event, 'client')">Client Login</button>
-            <button class="tablinks" onclick="openLoginForm(event, 'officer')">Officer Login</button>
+            <button class="tablinks active" onclick="openLoginForm(event, 'client')">User's Login</button>
+            <button class="tablinks" onclick="openLoginForm(event, 'officer')">Officer's Login</button>
         </div>
         <div id="client" class="login-form active">
             <form action="/login/client" method="post">
