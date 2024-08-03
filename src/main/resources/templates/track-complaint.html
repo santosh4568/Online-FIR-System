@@ -85,7 +85,7 @@
         </form>
         <div class="message" th:if="${errorMessage}" th:text="${errorMessage}"></div>
         <div class="status" th:if="${statusMessage}" th:text="${statusMessage}" 
-             th:classappend="${statusMessage == 'The status of your complaint is: Accepted'} ? 'status-accepted' : 'status-rejected'"></div>
+             th:classappend="${statusMessage == 'The status of your complaint is: Rejected'} ? 'status-rejected' : 'status-accepted'"></div>
     </div>
 </body>
 </html>

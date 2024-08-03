@@ -244,11 +244,6 @@ public class MyController {
         complaint.setComplainantName(complainantName);
         complaint.setComplainantPhone(complainantPhone);
 
-//        firService.SaveFir(complaint);
-//
-//        modelAndView.setViewName("add-complaint");
-//        modelAndView.addObject("successMessage", "Complaint submitted successfully!");
-//        modelAndView.setViewName("home");
         FIR savedComplaint = firService.SaveFir(complaint);
 
         ComplaintStatus complaintStatus = new ComplaintStatus();
@@ -257,8 +252,10 @@ public class MyController {
 
         complaintStatusService.saveComplaintStatus(complaintStatus);
 
-        modelAndView.addObject("successMessage", "Complaint submitted successfully!");
-        modelAndView.setViewName("home");
+        //modelAndView.addObject("successMessage", "Complaint submitted successfully!");
+        modelAndView.addObject("savedComplaint", savedComplaint);       
+        
+        modelAndView.setViewName("complaintSummary");
 		
 		return modelAndView;
 	}
