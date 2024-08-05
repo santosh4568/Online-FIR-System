@@ -33,4 +33,27 @@ public class OfficerService {
 		// TODO Auto-generated method stub
 		return officerRepo.findAll();
 	}
+
+	public void updatePassword(String username, String newPassword) {
+		// TODO Auto-generated method stub
+		Officer tempOfficer = officerRepo.findByUsername(username);
+		officerRepo.deleteById(tempOfficer.getID());
+		
+		Officer officer = new Officer();
+		
+		officer.setCity(tempOfficer.getCity());
+		officer.setDist(tempOfficer.getDist());
+		officer.setEmail(tempOfficer.getEmail());
+		officer.setID(tempOfficer.getID());
+		officer.setName(tempOfficer.getName());
+		officer.setPassword(newPassword);
+		officer.setPhone(tempOfficer.getPhone());
+		officer.setPoliceStation(tempOfficer.getPoliceStation());
+		officer.setServiceNumber(tempOfficer.getServiceNumber());
+		officer.setState(tempOfficer.getState());
+		officer.setUsername(tempOfficer.getUsername());
+		
+		officerRepo.save(officer);
+		
+	}
 }

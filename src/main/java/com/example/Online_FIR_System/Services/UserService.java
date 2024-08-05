@@ -33,4 +33,23 @@ public class UserService {
 		// TODO Auto-generated method stub
 		return userRepo.findAll();
 	}
+
+	public void updatePassword(String username, String newPassword) {
+		// TODO Auto-generated method stub
+		User temp = userRepo.findByUsername(username);
+		userRepo.deleteById(temp.getId());
+		
+		User user = new User();
+		
+		
+		user.setId(temp.getId());
+		user.setAddress(temp.getAddress());
+		user.setName(temp.getName());
+		user.setPassword(newPassword);
+		user.setPhoneNumber(temp.getPhoneNumber());
+		user.setUsername(temp.getUsername());		
+		
+		userRepo.save(user);
+		
+	}
 }
