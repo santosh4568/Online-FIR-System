@@ -9,7 +9,7 @@ Welcome to the **Online FIR System** - a comprehensive web application designed 
 ### For Users:
 - **User Registration**: Easy signup for clients to register their details.
 - **File Complaints**: Submit complaints with dynamic fields for state, district, and police station.
-- **Track Complaints**: Monitor the status of submitted complaints in real-time.
+- **Track Complaints**: Monitor the status of submitted complaints.
 - **User Authentication**: Secure login to protect user data and privacy.
 
 ### For Officers:
@@ -44,12 +44,16 @@ Welcome to the **Online FIR System** - a comprehensive web application designed 
    - Create a Database named as **fir**
    - Update the **src/main/resources/application.properties** file with your MySQL database
      ```sh
-     spring.datasource.url=jdbc:mysql://localhost:3306/fir_db
+     spring.datasource.url=jdbc:mysql://localhost:3306/fir
      spring.datasource.username=root
      spring.datasource.password=yourpassword
      spring.jpa.hibernate.ddl-auto=update
 3. **Build and Run the application**
-4. **Access the application**
+   ```sh
+   mvn clean install
+   mvn spring-boot:run
+5. **Access the application**
+   - Open your browser and navigate to **http://localhost:8080**.
 ### Author
 - Santosh Kumar
 ### Acknowledgments
