@@ -38,7 +38,7 @@ Welcome to the **Online FIR System** - a comprehensive web application designed 
 
 1. **Clone the Repository:**
    ```sh
-   git clone [https://github.com/santosh4568/Online-FIR-System]
+   git clone https://github.com/santosh4568/Online-FIR-System
    cd Online-FIR-System
 2. **Configure Database:**
    - Create a Database named as **fir**
