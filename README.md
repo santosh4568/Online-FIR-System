@@ -1,4 +1,4 @@
-# Online FIR System
+# JusticeNet - Online FIR System
 
 ## Overview
 
@@ -21,6 +21,12 @@ Welcome to the **Online FIR System** - a comprehensive web application designed 
 - **Spring Security Integration**: Ensures robust authentication and authorization.
 - **BCrypt Password Encoding**: Passwords are securely encoded for added security.
 
+### Project Structure
+- **Controller**:Handles incoming requests and maps them to services.
+- **Model**:Contains the entity classes representing the database schema.
+- **Repository**:Interfaces for CRUD operations on the database.
+- **Service**: Contains business logic and interactions with the repository layer.
+
 ## Getting Started
 
 ### Prerequisites
@@ -34,3 +40,18 @@ Welcome to the **Online FIR System** - a comprehensive web application designed 
    ```sh
    git clone https://github.com/yourusername/OnlineFIRSystem.git
    cd OnlineFIRSystem
+2. **Configure Database:**
+   - Create a Database named as **fir**
+   - Update the **src/main/resources/application.properties** file with your MySQL database
+     ```sh
+     spring.datasource.url=jdbc:mysql://localhost:3306/fir_db
+     spring.datasource.username=root
+     spring.datasource.password=yourpassword
+     spring.jpa.hibernate.ddl-auto=update
+3. **Build and Run the application**
+4. **Access the application**
+### Author
+- Santosh Kumar
+### Acknowledgments
+- Special thanks to the Spring Boot and Thymeleaf communities for their excellent documentation and support.
+
