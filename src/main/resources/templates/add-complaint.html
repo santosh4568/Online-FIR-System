@@ -121,8 +121,25 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="complaintType">Complaint Type</label>
+                <select id="complaintType" name="complaintType" required>
+                    <option value="">Select Complaint Type</option>
+                    <option value="Theft">Theft</option>
+                    <option value="Fraud">Fraud</option>
+                    <option value="Domestic Violence">Domestic Violence</option>
+                    <option value="Cyber Crime">Cyber Crime</option>
+                    <option value="Extortion">Extortion</option>
+                    <option value="Kidnapping">Kidnapping</option>
+                    <option value="Murder">Murder</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="details">Details</label>
                 <textarea id="details" name="details" rows="4" required></textarea>
+                <button type="button" id="startRecording" style="width: 40%; margin-left: 30%">🎙️ Speak</button>
+                <button type="button" id="stopRecording" style="display:none;width: 40%;margin-left: 30%;">Stop</button>
             </div>
             <div class="form-group">
                 <label for="complainantName">Complainant Name</label>
@@ -189,6 +206,57 @@
                 }
             });
         });
+
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const startBtn = document.getElementById("startRecording");
+            const stopBtn = document.getElementById("stopRecording");
+            const incidentDesc = document.getElementById("details");
+
+            let recognition;
+
+            if ('webkitSpeechRecognition' in window) {
+                recognition = new webkitSpeechRecognition(); // Or SpeechRecognition
+                recognition.continuous = true; // Keep recording until manually stopped
+                recognition.interimResults = false; // Process only final results
+                recognition.lang = 'en-US'; // Set language
+            } else {
+                alert("Your browser does not support Speech Recognition API.");
+            }
+
+            startBtn.addEventListener("click", () => {
+                if (recognition) {
+                    recognition.start();
+                    startBtn.style.display = "none";
+                    stopBtn.style.display = "inline";
+                }
+            });
+
+            stopBtn.addEventListener("click", () => {
+                if (recognition) {
+                    recognition.stop();
+                    startBtn.style.display = "inline";
+                    stopBtn.style.display = "none";
+                }
+            });
+
+            // Process results from the Speech API
+            if (recognition) {
+                recognition.onresult = (event) => {
+                    const transcript = Array.from(event.results)
+                        .map(result => result[0].transcript)
+                        .join(' ');
+                    incidentDesc.value += transcript;
+                };
+
+                recognition.onerror = (event) => {
+                    console.error("Speech recognition error:", event.error);
+                };
+            }
+        });
+
     </script>
 </body>
 </html>

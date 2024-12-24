@@ -52,4 +52,9 @@ public class UserService {
 		userRepo.save(user);
 		
 	}
+
+	public String getName(String username) {
+		return userRepo.findByUsername(username).getName();
+	}
+
 }

@@ -82,8 +82,8 @@
                     <th>Name</th>
                     <th>Phone Number</th>
                     <th>Address</th>
-                    <th>Username</th>
-                    <th>Password</th>
+<!--                    <th>Username</th>-->
+<!--                    <th>Password</th>-->
                     
                 </tr>
             </thead>
@@ -93,12 +93,12 @@
                     <td th:text="${user.name}">Name</td>
                     <td th:text="${user.phoneNumber}">Phone Number</td>
                     <td th:text="${user.address}">Address</td>
-                    <td th:text="${user.username}">Username</td>
-                    <td th:text="${user.password}">Password</td>
+<!--                    <td th:text="${user.username}">Username</td>-->
+<!--                    <td th:text="${user.password}">Password</td>-->
                 </tr>
             </tbody>
         </table>
-        <form th:action="@{/}" method="get" style="text-align: center;">
+        <form th:action="@{/admin/dashboard}" method="get" style="text-align: center;">
             <button type="submit" class="back-btn">Back to Home</button>
         </form>
     </div>

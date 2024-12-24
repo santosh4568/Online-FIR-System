@@ -1,49 +1,47 @@
 package com.example.Online_FIR_System.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "officer_table")
 public class Officer {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long ID;
-	
-	private String ServiceNumber;
-	private String Name;
+	private Long id;
+
+	@Column(name = "service_number")
+	private String serviceNumber;
+	private String name;
 	private String email;
 	private String phone;
-	private String State;
+	@Column(name = "state")
+	private String state;
 	private String dist;
-	private String City;
+	@Column(name = "city")
+	private String city;
 	private String policeStation;
 	private String username;
 	private String password;
-	
-	
-	
-	public Long getID() {
-		return ID;
+
+	// Getters and Setters
+	public Long getId() {
+		return id;
 	}
-	public void setID(Long iD) {
-		ID = iD;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getServiceNumber() {
-		return ServiceNumber;
+		return serviceNumber;
 	}
 	public void setServiceNumber(String serviceNumber) {
-		ServiceNumber = serviceNumber;
+		this.serviceNumber = serviceNumber;
 	}
 	public String getName() {
-		return Name;
+		return name;
 	}
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 	public String getEmail() {
 		return email;
@@ -58,10 +56,10 @@ public class Officer {
 		this.phone = phone;
 	}
 	public String getState() {
-		return State;
+		return state;
 	}
 	public void setState(String state) {
-		State = state;
+		this.state = state;
 	}
 	public String getDist() {
 		return dist;
@@ -70,10 +68,10 @@ public class Officer {
 		this.dist = dist;
 	}
 	public String getCity() {
-		return City;
+		return city;
 	}
 	public void setCity(String city) {
-		City = city;
+		this.city = city;
 	}
 	public String getPoliceStation() {
 		return policeStation;
@@ -93,7 +91,4 @@ public class Officer {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	
 }

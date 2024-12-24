@@ -74,18 +74,33 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Track Your Complaint</h1>
-        <form th:action="@{/trackComplaint}" method="post">
-            <input type="text" name="complaintId" placeholder="Enter your Complaint ID" required />
-            <button type="submit">Track</button>
-        </form>
-        <form th:action="@{/}" method="get" style="text-align: center;">
-            <button type="submit" class="back-btn">Back to Home</button>
-        </form>
-        <div class="message" th:if="${errorMessage}" th:text="${errorMessage}"></div>
-        <div class="status" th:if="${statusMessage}" th:text="${statusMessage}" 
-             th:classappend="${statusMessage == 'The status of your complaint is: Rejected'} ? 'status-rejected' : 'status-accepted'"></div>
+<div class="container">
+    <h1>Track Your Complaint</h1>
+    <form th:action="@{/trackComplaint}" method="post">
+        <input type="text" name="complaintId" placeholder="Enter your Complaint ID" required />
+        <button type="submit">Track</button>
+    </form>
+    <form th:action="@{/}" method="get" style="text-align: center;">
+        <button type="submit" class="back-btn">Back to Home</button>
+    </form>
+
+    <div class="message" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+    <div class="status" th:if="${statusMessage}" th:text="${statusMessage}"
+         th:classappend="${statusMessage == 'The status of your complaint is: Rejected'} ? 'status-rejected' : 'status-accepted'"></div>
+    <div class="message" th:if="${remarks}" th:text="${remarks}"></div>
+
+    <h2>---------------------------------------- FIR DETAILS ---------------------------------------</h2>
+
+    <h3 th:text="'Officer Assigned : '+${officerAssigned}"></h3>
+
+    <div th:if="${fir_details != null}">
+        <p th:if="${fir_details.id}" th:text="'FIR ID: ' + ${fir_details.id}"></p>
+        <p th:if="${fir_details.getDate()}" th:text="'Complaint Date: ' + ${fir_details.getDate().toString().substring(0,10)}"></p>
+        <p th:if="${fir_details.getDate()}" th:text="'Complaint Time: ' + ${fir_details.getDate().toString().substring(11,19)}"></p>
+        <p th:if="${fir_details.state}" th:text="'State: ' + ${fir_details.state}"></p>
+        <p th:if="${fir_details.district}" th:text="'District: ' + ${fir_details.district}"></p>
+        <p th:if="${fir_details.policeStation}" th:text="'Police Station: ' + ${fir_details.policeStation}"></p>
     </div>
+</div>
 </body>
 </html>

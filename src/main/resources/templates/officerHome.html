@@ -15,7 +15,7 @@
             padding: 0;
         }
         .container {
-            width: 80%;
+            width: 90%;
             margin: 50px auto;
             background: #fff;
             padding: 20px;
@@ -79,6 +79,8 @@
             <thead>
                 <tr>
                     <th>FIR ID</th>
+                    <th>Complaint Date</th>
+                    <th>Complaint Time</th>
                     <th>State</th>
                     <th>District</th>
                     <th>Police Station</th>
@@ -87,11 +89,14 @@
                     <th>Complainant Phone</th>
                     <th>Status</th>
                     <th>Action</th>
+                    <th>Remarks</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="complaint : ${complaints}">
                     <td th:text="${complaint.id}">1</td>
+                    <td th:text="${complaint.getDate().toString().substring(0,10)}">Complaint Date</td>
+                    <td th:text="${complaint.getDate().toString().substring(11,19)}">Complaint Time</td>
                     <td th:text="${complaint.state}">State</td>
                     <td th:text="${complaint.district}">District</td>
                     <td th:text="${complaint.policeStation}">Police Station</td>
@@ -108,9 +113,16 @@
                             <input type="hidden" name="complaintId" th:value="${complaint.id}" />
                             <button type="submit" class="action-btn reject-btn">Reject</button>
                         </form>
-                        <form th:action="@{/culpritArrested}" method="post" style="display: inline;">
+<!--                        <form th:action="@{/culpritArrested}" method="post" style="display: inline;">-->
+<!--                            <input type="hidden" name="complaintId" th:value="${complaint.id}" />-->
+<!--                            <button type="submit" class="action-btn complete-btn">Arrested</button>-->
+<!--                        </form>-->
+                    </td>
+                    <td>
+                        <form th:action="@{/addRemarks}" method="post">
                             <input type="hidden" name="complaintId" th:value="${complaint.id}" />
-                            <button type="submit" class="action-btn complete-btn">Arrested</button>
+                            <input type="text" name="remarks" placeholder="Remarks" />
+                            <button type="submit" class="action-btn">Add</button>
                         </form>
                     </td>
                 </tr>

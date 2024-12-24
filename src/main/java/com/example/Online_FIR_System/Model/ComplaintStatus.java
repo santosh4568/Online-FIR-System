@@ -17,6 +17,8 @@ public class ComplaintStatus {
 
     private Long complaintId;
     private String status;
+    private String remarks;
+    private String officerAssigned = "Not Assigned";
 
     // Getters and setters
 
@@ -48,5 +50,23 @@ public class ComplaintStatus {
 		// TODO Auto-generated method stub
 		return false;
 	}
+    public String getRemarks() {
+        // TODO Auto-generated method stub
+        return remarks;
+    }
+    public void setRemarks(String remarks) {
+        // TODO Auto-generated method stub
+        this.remarks = remarks;
+    }
+
+    public void setOfficerAssigned(String officerAssigned) {
+        // TODO Auto-generated method stub
+        this.officerAssigned = officerAssigned;
+    }
+
+    public String getOfficerAssigned() {
+        // TODO Auto-generated method stub
+        return officerAssigned;
+    }
 }
 

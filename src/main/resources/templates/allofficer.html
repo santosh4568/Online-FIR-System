@@ -78,7 +78,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Serial No.</th>
                     <th>Service Number</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -87,13 +87,13 @@
                     <th>District</th>
                     <th>City</th>
                     <th>Police Station Name</th>
-                    <th>Username</th>
-                    <th>Password</th>
+<!--                    <th>Username</th>-->
+<!--                    <th>Password</th>-->
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="officer : ${officers}">
-                    <td th:text="${officer.ID}">1</td>
+            <tr th:each="officer, iterStat : ${officers}">
+                    <td th:text="${iterStat.count}">1</td>
                     <td th:text="${officer.ServiceNumber}">Service Number</td>
                     <td th:text="${officer.Name}">Name</td>
                     <td th:text="${officer.email}">Email</td>
@@ -102,13 +102,13 @@
                     <td th:text="${officer.dist}">District</td>
                     <td th:text="${officer.city}">City</td>
                     <td th:text="${officer.policeStation}">Police Station</td>
-                    <td th:text="${officer.username}">Username</td>
-                    <td th:text="${officer.password}">Password</td>
+<!--                    <td th:text="${officer.username}">Username</td>-->
+<!--                    <td th:text="${officer.password}">Password</td>-->
                     
                 </tr>
             </tbody>
         </table>
-        <form th:action="@{/}" method="get" style="text-align: center;">
+        <form th:action="@{/admin/dashboard}" method="get" style="text-align: center;">
             <button type="submit" class="back-btn">Back to Home</button>
         </form>
     </div>

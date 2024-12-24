@@ -1,5 +1,8 @@
 package com.example.Online_FIR_System.Controller;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 //import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +22,7 @@ import com.example.Online_FIR_System.Services.FirService;
 import com.example.Online_FIR_System.Services.OfficerService;
 import com.example.Online_FIR_System.Services.UserService;
 
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//import jakarta.servlet.http.HttpSession;
+
 
 
 
@@ -46,6 +47,7 @@ public class MyController {
 	
 	String activePoliceStation = "";
 	String activeUser = "";
+	int noOfFir = 0;
 	
 	@GetMapping("/")
 	public ModelAndView loadHome() {
@@ -54,6 +56,7 @@ public class MyController {
 		if(isLogin) {
 			if(isOfficer) {
 				modelAndView.addObject("activeUser", activeUser);
+				modelAndView.addObject("noOfFir" , String.valueOf(noOfFir));
 				modelAndView.setViewName("officerLoggedin");				
 			}
 			else {
@@ -106,13 +109,26 @@ public class MyController {
 	}
 	
 	
-	@GetMapping("/admin/fir")
-	public ModelAndView AllFir() {
+	@PostMapping("/admin/FIRReport")
+	public ModelAndView AllFir(@RequestParam("state") String state , @RequestParam("district") String district , @RequestParam("policeStation") String ps) {
 		ModelAndView modelAndView = new ModelAndView();
-		List<FIR> complaints = firService.getAllFIR();
+		List<FIR> complaints = new ArrayList<>();
+		if(state.equals("All")){
+			complaints = firService.getAllFIR();
+		}
+		else if(district.equals("All")) {
+			complaints = firService.findByState(state);
+		}
+		else if (ps.equals("All")) {
+			complaints = firService.findByDistrict(district);
+		}
+
+		else {
+			complaints = firService.findByPoliceStation(ps);
+		}
 		modelAndView.addObject("complaints", complaints);
         modelAndView.setViewName("allFIR");
-		
+
 		return modelAndView;
 	}
 	
@@ -127,14 +143,29 @@ public class MyController {
 	}
 	
 	
-	@GetMapping("/admin/officer")
-	public ModelAndView AllOfficer() {
+	@PostMapping("/admin/OfficerReport")
+	public ModelAndView AllOfficer(@RequestParam("state") String state , @RequestParam("district") String district , @RequestParam("city") String city , @RequestParam("policeStation") String ps) {
 		ModelAndView modelAndView = new ModelAndView();
-		List<Officer> officers = officerService.getAllOfficer();
+		List<Officer> officers = new ArrayList<Officer>();
+		if(state.equals("All")){
+			officers = officerService.getAllOfficer();
+		}
+		else if(district.equals("All")) {
+			officers = officerService.findByState(state);
+		}
+		else if(city.equals("All")) {
+			officers = officerService.findByDistrict(district);
+		}
+		else if(ps.equals("All")) {
+			officers = officerService.findByCity(city);
+		}
+		else {
+			officers = officerService.findByPoliceStation(ps);
+		}
+//		List<Officer> officers = officerService.getAllOfficer();
 		modelAndView.addObject("officers", officers);
 		modelAndView.setViewName("allofficer");
-		return modelAndView;	
-		
+		return modelAndView;
 	}
 	
 	@GetMapping("/forgotpassword")
@@ -152,6 +183,11 @@ public class MyController {
 //	public ModelAndView showOfficerSignup() {
 //		return new ModelAndView("signupOfficer");
 //	}
+
+	@GetMapping("/admin/dashboard")
+	public ModelAndView showAdminDashboard() {
+		return new ModelAndView("adminHome");
+	}
 	
 	
 	
@@ -260,7 +296,7 @@ public class MyController {
         else {
         	//session.setAttribute("username", username);
         	isLogin = true;
-        	activeUser = username;
+        	activeUser = userService.getName(username);
         	//modelAndView.setViewName("home"); // Redirect to the home page on successful login
         	modelAndView.addObject("activeUser", activeUser);        	
         	modelAndView.setViewName("loggedin");
@@ -288,18 +324,40 @@ public class MyController {
         	//session.setAttribute("username", serviceNumberString);
         	isLogin = true;
         	isOfficer = true;
-        	activeUser = officer.getUsername();
+        	activeUser = officerService.getOfficerName(serviceNumberString);
         	activePoliceStation = officer.getPoliceStation();
         	//List<FIR> complaints = firService.getAllFIR();
-//        	List<FIR> complaints = firService.findByPoliceStation(activePoliceStation);           
+			if(noOfFir == 0) {
+				List<FIR> complaints = firService.findByPoliceStation(activePoliceStation);
+				for (int i = 0; i < complaints.size(); i++) {
+					if (complaints.get(i).getStatus().equals("Pending")) {
+						noOfFir += 1;
+					}
+				}
+			}
+			//noOfFir = complaints.size();
 //        	modelAndView.addObject("complaints", complaints);
 //            modelAndView.setViewName("officerHome"); // Redirect to the home page on successful login
+			modelAndView.addObject("noOfFir" , String.valueOf(noOfFir));
         	modelAndView.addObject("activeUser", activeUser);
+
         	modelAndView.setViewName("officerLoggedin");
         }
 		
 		return modelAndView;	
 		
+	}
+
+	@PostMapping("/login/admin")
+	public ModelAndView AdminLogin(@RequestParam("username") String username , @RequestParam("password") String password) {
+		ModelAndView modelAndView = new ModelAndView();
+		if(username.equals("admin") && password.equals("admin")) {
+			modelAndView.setViewName("adminHome");
+		}
+		else {
+			modelAndView.setViewName("WrongUsername");
+		}
+		return modelAndView;
 	}
 	
 	
@@ -312,6 +370,7 @@ public class MyController {
             @RequestParam("policeStation") String policeStation,
             @RequestParam("details") String details,
             @RequestParam("complainantName") String complainantName,
+			@RequestParam("complaintType") String complaintType,
             @RequestParam("complainantPhone") String complainantPhone) {
 		
 		ModelAndView modelAndView = new ModelAndView();
@@ -320,6 +379,7 @@ public class MyController {
 		complaint.setState(state);
         complaint.setDistrict(district);
         complaint.setPoliceStation(policeStation);
+		complaint.setComplaintType(complaintType);
         complaint.setDetails(details);
         complaint.setComplainantName(complainantName);
         complaint.setComplainantPhone(complainantPhone);
@@ -359,6 +419,7 @@ public class MyController {
             complaint.setStatus("Accepted");
             firService.SaveFir(complaint);
             firService.updateFirStatus(complaintId, "Accepted");
+			firService.updateFirOfficerAssigned(complaintId , activeUser);
         }
         return "redirect:/officerHome";
     }
@@ -370,23 +431,63 @@ public class MyController {
             //firService.deleteById(complaintId);
             firService.rejectComplaint(complaintId);
             firService.updateFirStatus(complaintId, "Rejected");
+			firService.updateFirOfficerAssigned(complaintId , activeUser);
         }
         return "redirect:/officerHome";
     }
-	
-	@PostMapping("/culpritArrested")
-    public String culpritArrested(@RequestParam("complaintId") Long complaintId) {
-        FIR complaint = firService.findById(complaintId).orElse(null);
-        if (complaint != null) {
-            //firService.deleteById(complaintId);
-            //firService.rejectComplaint(complaintId);
-        	firService.arrestedCulprit(complaintId);
-        	
-        	
-            firService.updateFirStatus(complaintId, "Culprit Arrested");
-        }
-        return "redirect:/officerHome";
-    }
+
+	@GetMapping("/admin/reports")
+	public ModelAndView showReport(){
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("reports");
+		return mv;
+	}
+
+	@PostMapping("/generateReport")
+	public ModelAndView showComplaintReport(
+			@RequestParam("state") String state,
+			@RequestParam("district") String district,
+			@RequestParam("policeStation") String policeStation){
+		ModelAndView mv = new ModelAndView();
+
+		Map<String , Long> complaints = new HashMap<>();
+		if(state.equals("All")){
+			complaints = firService.countAllByComplaintType();
+		}
+		else if(district.equals("All")) {
+			complaints = firService.countComplaintTypeByState(state);
+		}
+		else if (policeStation.equals("All")) {
+			complaints = firService.countComplaintTypeByDistrict(district);
+		}
+		else {
+			complaints = firService.countComplaintTypeByPoliceStation(policeStation);
+		}
+		mv.addObject("complaints", complaints);
+
+		mv.setViewName("showReport");
+		return mv;
+	}
+
+	@GetMapping("/admin/officers")
+	public ModelAndView showOfficerReport(){
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("officerReport");
+		return mv;
+	}
+
+	@GetMapping("/admin/fir")
+	public ModelAndView showFirReport(){
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("firReport");
+		return mv;
+	}
+
+	@PostMapping("/addRemarks")
+	public String updateRemarks(@RequestParam("complaintId") Long complaintId, @RequestParam("remarks") String remarks) {
+		firService.updateFirRemarks(complaintId, remarks);
+		return "redirect:/officerHome";
+	}
 	
 	
 	@GetMapping("/track-complaint")
@@ -399,27 +500,34 @@ public class MyController {
 		}	
     }
 
-    @PostMapping("/trackComplaint")
-    public ModelAndView trackComplaint(@RequestParam("complaintId") Long complaintId) {
-    	 ModelAndView modelAndView = new ModelAndView("track-complaint");
-         
-         ComplaintStatus complaintStatus = complaintStatusService.findByComplaintId(complaintId);
+	@PostMapping("/trackComplaint")
+	public ModelAndView trackComplaint(@RequestParam("complaintId") Long complaintId) {
+		ModelAndView modelAndView = new ModelAndView("track-complaint");
 
-         if (complaintStatus == null) {
-             modelAndView.addObject("errorMessage", "No complaint found with the provided ID.");
-         } else {
-             modelAndView.addObject("statusMessage", "The status of your complaint is: " + complaintStatus.getStatus());
-         }
+		ComplaintStatus complaintStatus = complaintStatusService.findByComplaintId(complaintId);
 
-         return modelAndView;
-    }
-    
-    @GetMapping("/logout")
+		if (complaintStatus == null) {
+			modelAndView.addObject("errorMessage", "No complaint found with the provided ID.");
+		} else {
+			String officerAssigned = complaintStatus.getOfficerAssigned();
+			modelAndView.addObject("officerAssigned", officerAssigned != null ? officerAssigned : "No officer assigned yet.");
+			FIR fir_details = firService.findById(complaintStatus.getComplaintId()).orElse(null);
+			modelAndView.addObject("fir_details", fir_details);
+			modelAndView.addObject("statusMessage", "The status of your complaint is: " + complaintStatus.getStatus());
+			modelAndView.addObject("remarks", "Remarks: " + complaintStatus.getRemarks());
+		}
+
+		return modelAndView;
+	}
+
+
+	@GetMapping("/logout")
     public ModelAndView logout() {
         // Invalidate the session
     	isLogin = false;
     	isOfficer = false;
     	activeUser = "";
+		noOfFir = 0;
     	return new ModelAndView("home");
    }
 }

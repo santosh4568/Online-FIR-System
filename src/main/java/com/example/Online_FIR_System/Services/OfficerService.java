@@ -37,14 +37,14 @@ public class OfficerService {
 	public void updatePassword(String username, String newPassword) {
 		// TODO Auto-generated method stub
 		Officer tempOfficer = officerRepo.findByUsername(username);
-		officerRepo.deleteById(tempOfficer.getID());
+		officerRepo.deleteById(tempOfficer.getId());
 		
 		Officer officer = new Officer();
 		
 		officer.setCity(tempOfficer.getCity());
 		officer.setDist(tempOfficer.getDist());
 		officer.setEmail(tempOfficer.getEmail());
-		officer.setID(tempOfficer.getID());
+		officer.setId(tempOfficer.getId());
 		officer.setName(tempOfficer.getName());
 		officer.setPassword(newPassword);
 		officer.setPhone(tempOfficer.getPhone());
@@ -55,5 +55,25 @@ public class OfficerService {
 		
 		officerRepo.save(officer);
 		
+	}
+
+	public String getOfficerName(String username) {
+		return officerRepo.findByUsername(username).getName();
+	}
+
+	public List<Officer> findByState(String state) {
+		return officerRepo.findByState(state);
+	}
+
+	public List<Officer> findByDistrict(String district) {
+		return officerRepo.findByDist(district);
+	}
+
+	public List<Officer> findByCity(String city) {
+		return officerRepo.findByCity(city);
+	}
+
+	public List<Officer> findByPoliceStation(String ps) {
+		return officerRepo.findByPoliceStation(ps);
 	}
 }

@@ -216,9 +216,9 @@
         	
             <a th:href="@{/track-complaint}"><strong>Track Complaint</strong></a>
             <a th:href="@{/add-complaint}"><strong>Add Complaint</strong></a>
-            <a th:href="@{/officerHome}"><strong>Complaint Registered</strong></a>
+            <a th:href="@{/officerHome}"><strong>Complaint Registered</strong> (<span th:text="${noOfFir}"></span>)</a>
             <div class="dropdown">
-				  <span th:text = ${activeUser}><strong>Username</strong></span>
+				  <span th:text = "${activeUser}"><strong>Username</strong></span>
 				  <div class="dropdown-content">
 				  <a th:href=@{/logout}><strong>Logout</strong></a>
 				  </div>

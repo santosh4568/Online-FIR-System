@@ -79,6 +79,8 @@
             <thead>
                 <tr>
                     <th>FIR ID</th>
+                    <th>Complaint Date</th>
+                    <th>Complaint Time</th>
                     <th>State</th>
                     <th>District</th>
                     <th>Police Station</th>
@@ -92,6 +94,8 @@
             <tbody>
                 <tr th:each="complaint : ${complaints}">
                     <td th:text="${complaint.id}">1</td>
+                    <td th:text="${complaint.getDate().toString().substring(0,10)}">Complaint Date</td>
+                    <td th:text="${complaint.getDate().toString().substring(11,19)}">Complaint Time</td>
                     <td th:text="${complaint.state}">State</td>
                     <td th:text="${complaint.district}">District</td>
                     <td th:text="${complaint.policeStation}">Police Station</td>
@@ -103,7 +107,7 @@
                 </tr>
             </tbody>
         </table>
-        <form th:action="@{/}" method="get" style="text-align: center;">
+        <form th:action="@{/admin/dashboard}" method="get" style="text-align: center;">
             <button type="submit" class="back-btn">Back to Home</button>
         </form>
     </div>

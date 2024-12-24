@@ -6,6 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.util.Date;
+
+
 @Entity
 @Table(name = "fir_details")
 public class FIR {
@@ -17,11 +20,18 @@ public class FIR {
     private String state;
     private String district;
     private String policeStation;
+	private String complaintType;
     private String details;
     private String complainantName;
     private String complainantPhone;
     private String status = "Pending";
-    
+	private Date currdate = new Date();
+
+//	long millis=System.currentTimeMillis();
+//	java.sql.Date date=new java.sql.Date(millis);
+
+//	private LocalDate date = LocalDate.now();
+
 	public Long getId() {
 		return id;
 	}
@@ -72,5 +82,17 @@ public class FIR {
     public void setStatus(String status) {
         this.status = status;
     }
+	public String getComplaintType() {
+		return complaintType;
+	}
+	public void setComplaintType(String complaintType) {
+		this.complaintType = complaintType;
+	}
+	public Date getDate() {
+		return currdate;
+	}
+	public void setDate(Date date) {
+		this.currdate = date;
+	}
 
 }

@@ -1,7 +1,10 @@
 package com.example.Online_FIR_System.Services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +52,10 @@ public class FirService {
     	public List<FIR> findByPoliceStation(String policeStation) {
         return FirRepo.findByPoliceStation(policeStation);
     }
+
+//    public List<FIR> findAllPendingFir(String status , String policeStation) {
+//        return FirRepo.findAllPendingFir(status , policeStation);
+//    }
     	
     	public void updateFirStatus(Long complaintId, String status) {
             Optional<ComplaintStatus> complaintStatus = Optional.ofNullable(complaintStatusService.findByComplaintId(complaintId));
@@ -66,4 +73,82 @@ public class FirService {
 	        FirRepo.save(complaint);
 			
 		}
+
+        public void updateFirRemarks(Long complaintId, String remarks) {
+            Optional<ComplaintStatus> complaintStatus = Optional.ofNullable(complaintStatusService.findByComplaintId(complaintId));
+            if (complaintStatus.isPresent()) {
+                ComplaintStatus cs = complaintStatus.get();
+                cs.setRemarks(remarks);
+                complaintStatusService.saveComplaintStatus(cs);
+            }
+        }
+
+        public void updateFirOfficerAssigned(Long complaintId, String officerAssigned) {
+            Optional<ComplaintStatus> complaintStatus = Optional.ofNullable(complaintStatusService.findByComplaintId(complaintId));
+            if (complaintStatus.isPresent()) {
+                ComplaintStatus cs = complaintStatus.get();
+                cs.setOfficerAssigned(officerAssigned);
+                complaintStatusService.saveComplaintStatus(cs);
+            }
+        }
+
+    public List<FIR> findByState(String state) {
+        return FirRepo.findByState(state);
+    }
+
+    public List<FIR> findByDistrict(String district) {
+        return FirRepo.findByDistrict(district);
+    }
+
+
+
+    public Map<String, Long> countComplaintTypeByDistrict(String district) {
+        List<Object[]> data = FirRepo.countComplaintTypeByDistrict(district);
+        Map<String, Long> result = new HashMap<>();
+        for (Object[] obj : data) {
+            if(obj != null && obj.length >= 2 && obj[0] != null && obj[1] != null) {
+                String complaintType = String.valueOf(obj[0]);
+                Long count = ((Number) obj[1]).longValue();
+                result.put(complaintType, count);
+            }
+        }
+        return result;
+    }
+
+
+    public Map<String, Long> countComplaintTypeByState(String state) {
+        List<Object[]> data = FirRepo.countComplaintTypeByState(state);
+        Map<String, Long> result = new HashMap<>();
+        for (Object[] obj : data) {
+            if(obj != null && obj.length >= 2 && obj[0] != null && obj[1] != null) {
+                String complaintType = String.valueOf(obj[0]);
+                Long count = ((Number) obj[1]).longValue();
+                result.put(complaintType, count);
+            }
+        }
+        return result;
+    }
+
+    public Map<String, Long> countComplaintTypeByPoliceStation(String policeStation) {
+        List<Object[]> data = FirRepo.countComplaintTypeByPoliceStation(policeStation);
+        Map<String, Long> result = new HashMap<>();
+        for (Object[] obj : data) {
+            if(obj != null && obj.length >= 2 && obj[0] != null && obj[1] != null) {
+                String complaintType = String.valueOf(obj[0]);
+                Long count = ((Number) obj[1]).longValue();
+                result.put(complaintType, count);
+            }
+        }
+        return result;
+    }
+
+
+    public Map<String, Long> countAllByComplaintType() {
+        List<Object[]> data = FirRepo.countAllByComplaintType();
+        Map<String , Long> result = new HashMap<>();
+        for (Object[] obj : data) {
+            result.put((String) obj[0], (Long) obj[1]);
+        }
+        return result;
+    }
 }
