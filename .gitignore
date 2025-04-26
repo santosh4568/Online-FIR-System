@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+Dockerfile
+HELP.md
+mvnw
+mvnw.cmd
+.gitignore
