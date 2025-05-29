@@ -1,7 +1,7 @@
 // src/components/Header.jsx
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Header.css'; // You can create component-specific css
+import '../styles/global.css'
 
 function Header() {
     const [dropdownOpen, setDropdownOpen] = useState(false);

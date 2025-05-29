@@ -1,5 +1,5 @@
 // src/components/FeatureCard.jsx
-import './FeatureCard.css';
+import '../styles/global.css'
 
 function FeatureCard({ title, description, onClick }) {
     return (

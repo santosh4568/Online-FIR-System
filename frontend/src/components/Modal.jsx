@@ -1,5 +1,5 @@
 // src/components/Modal.jsx
-import './Modal.css';
+import '../styles/global.css'
 
 function Modal({ title, description, onClose }) {
     return (
